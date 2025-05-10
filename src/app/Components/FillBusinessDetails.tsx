@@ -152,4 +152,3 @@ export default function FillBusinessDetails({userId} : {userId : string}){
   </div>
   )
 }
-
