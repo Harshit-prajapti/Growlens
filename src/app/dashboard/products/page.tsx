@@ -1,6 +1,5 @@
 'use client'
 import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
 import axios from "axios";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";

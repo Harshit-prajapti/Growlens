@@ -48,7 +48,7 @@ export async function GET() {
     ]);
     return NextResponse.json(sales, { status: 200 });
   } catch (error) {
-    console.log("Some error are occuring");
+    console.log("Some error are occuring",error);
     return NextResponse.json("Some error are occuring");
   }
 }
