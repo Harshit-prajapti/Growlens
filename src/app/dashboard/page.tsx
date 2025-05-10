@@ -6,6 +6,7 @@ import authOptions from '../api/auth/[...nextauth]/options'
 import BusinessModel from '../../../models/BusinessModel'
 import SignIn from '../Components/SignIn/page'
 import UserModel from '../../../models/userModel'
+import { redirect } from 'next/navigation'
 import { CardContent, Card, CardHeader, CardDescription, CardTitle, CardFooter } from '@/components/ui/card'
 export default async function Dashboard() {
   await connectDb()
@@ -26,6 +27,9 @@ export default async function Dashboard() {
         <SignIn></SignIn>
       </div>
     )
+  }
+  if(!session.user.isProfileComplete){
+    redirect("/FillBusinessDetails")
   }
   const business = await BusinessModel.findById(user.businessId)
   return (
