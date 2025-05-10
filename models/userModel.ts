@@ -11,7 +11,9 @@ export interface User extends Document {
     mobileNumber : number;
     provider : "google" | "github" | "twitter";
     role : "user" | "admin";
-    businessId : ObjectId
+    businessId : ObjectId;
+    password : string;
+    isProfileComplete : boolean;
 }
 const UserSchema : Schema<User> =  new Schema({
     username : {
@@ -44,8 +46,16 @@ const UserSchema : Schema<User> =  new Schema({
     provider : {
         type : String        
     },
+    password : {
+        type : String,    },
     role : {
-        type : String
+        type : String,
+        enum : ["user","premium","admin"],
+        default : "user"
+    },
+    isProfileComplete : {
+        type : Boolean,
+        default : false
     }
 })
 UserSchema.pre("save", async function(next){
@@ -54,5 +64,5 @@ UserSchema.pre("save", async function(next){
     }
 })
 
-const UserModel =(mongoose.models.User as mongoose.Model<User>)|| mongoose.model<User>("user",UserSchema)
+const UserModel =(mongoose.models.User as mongoose.Model<User>)|| mongoose.model<User>("User",UserSchema)
 export default UserModel

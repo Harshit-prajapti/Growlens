@@ -11,7 +11,7 @@ export interface Business extends Document{
     annualRevenue: number;
     monthlySales: number;
     customerType: string // B2B | B2C
-     painPoints: [string] // List of business challenges
+    painPoints: [string] // List of business challenges
     growthGoals: [string]; // List of business objectives
     createdAt: Date;
     updatedAt: Date;
@@ -40,23 +40,22 @@ const BusinessSchema : Schema<Business> = new Schema({
     },
     annualRevenue : {
         type : Number,
-        requied : true
+        required : true
     },
     monthlySales : {
         type : Number,
-        requied : true
+        required : true
     },
     customerType : {
         type : String,
-        requied : true
+        enum : ["B2B","B2C"],
+        required : true
     },
     painPoints : {
         type : [String],
-        requied : true
     },
     growthGoals : {
         type : [String],
-        required : true
     },
     createdAt : {
         type : Date,
