@@ -17,7 +17,7 @@ const schema = z.object({
   customerType: z.string(),
 })
 
-const FillBusinessDetails = ({userId} : {userId : string}) => {
+export default function FillBusinessDetails({userId} : {userId : string}){
   const router = useRouter()
   const [error, setError] = useState<string>("")
   const [form, setForm] = useState({
@@ -153,4 +153,3 @@ const FillBusinessDetails = ({userId} : {userId : string}) => {
   )
 }
 
-export default FillBusinessDetails

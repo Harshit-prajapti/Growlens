@@ -2,10 +2,10 @@ import { getServerSession } from "next-auth"
 import authOptions from "@/app/api/auth/[...nextauth]/options"
 import UserModel from "../../../../../../models/userModel"
 import DailySales from "../../../../../../models/DailySales"
-import {NextResponse } from "next/server"
+import {NextRequest, NextResponse } from "next/server"
 import mongoose from "mongoose"
 
-export async function GET({ params }: { params: { productId: string } }) {
+export async function GET(_request : NextRequest,{ params }: { params: { productId: string } }) {
     const session = await getServerSession(authOptions)
     if (!session) {
         return new Response("Unauthorized", { status: 401 })
