@@ -4,7 +4,6 @@ import DailySales from "../../../../models/DailySales";
 import UserModel from "../../../../models/userModel";
 import { NextRequest, NextResponse } from "next/server";
 import ProudctModel from "../../../../models/Products";
-import { date } from "zod";
 export async function GET() {
   const session = await getServerSession(authOptions);
   const userId = session?.user.id;
@@ -62,8 +61,12 @@ export async function POST(req: NextRequest) {
   console.log(productId, quantitySold);
   try {
     const product = await ProudctModel.findById(productId);
-    const revenue = product?.price! * quantitySold;
-    const totalProfit = product?.profit! * quantitySold;
+    let revenue = 0;
+    let totalProfit = 0;
+    if(product?.price){
+        revenue = product?.price * quantitySold;
+        totalProfit = product?.profit * quantitySold; 
+    }
     const res = await DailySales.create({
       businessId: user?.businessId,
       productId: productId,

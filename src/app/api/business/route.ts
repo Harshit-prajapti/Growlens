@@ -3,9 +3,7 @@ import UserModel from "../../../../models/userModel";
 import BusinessModel from "../../../../models/BusinessModel";
 import connectDb from "@/lib/db";
 import authOptions from "../auth/[...nextauth]/options";
-import { cookies } from "next/headers";
 import { getServerSession } from "next-auth";
-import { trusted } from "mongoose";
 export async function POST(req : NextRequest){
     connectDb();
     const session = await getServerSession(authOptions)

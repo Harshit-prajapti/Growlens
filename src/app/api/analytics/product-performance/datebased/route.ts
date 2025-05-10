@@ -3,9 +3,7 @@ import { getServerSession } from "next-auth";
 import authOptions from "@/app/api/auth/[...nextauth]/options";
 import DailySales from "../../../../../../models/DailySales";
 import UserModel from "../../../../../../models/userModel";
-import { format } from "path";
-import { time } from "console";
-export async function GET(req: NextRequest){
+export async function GET(){
     const session  = await getServerSession(authOptions)
     const user = await UserModel.findById(session?.user.id)
     if(!user){

@@ -1,8 +1,7 @@
-import NextAuth, { NextAuthOptions } from "next-auth";
+import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google"
 import UserModel from "../../../../../models/userModel";
 import connectDb from "@/lib/db";
-import Credentials, { CredentialsProvider } from "next-auth/providers/credentials";
 export const authOptions : NextAuthOptions = {
     providers : [
         GoogleProvider({
@@ -16,7 +15,7 @@ export const authOptions : NextAuthOptions = {
     // callbacks are called after successfully oauth login
     callbacks : {
        // Called after successful OAuth login
-    async signIn({ user, account }) {
+    async signIn({ user}) {
         await connectDb();
         const existingUser = await UserModel.findOne({ email: user.email });
   
@@ -32,7 +31,7 @@ export const authOptions : NextAuthOptions = {
         }
         return true;
       },
-      async jwt({token,user}){
+      async jwt({token}){
         await connectDb()
         const dbUser = await UserModel.findOne({email : token.email})
         if(dbUser){
@@ -50,7 +49,7 @@ export const authOptions : NextAuthOptions = {
         }
         return session;
       },
-      async redirect({url,baseUrl}){
+      async redirect({baseUrl}){
         return baseUrl
       },
     },

@@ -51,8 +51,8 @@ const ProductsChart = () => {
         setLoading(false)
         console.log("This is the response from the product performance route", res.data)
     })
-    } catch ( error) {
-      console.log("Some error are occuring")
+    } catch (error) {
+      console.log("Some error are occuring",error)
     }
   }
   

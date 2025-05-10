@@ -22,7 +22,6 @@ const schema = z.object({
   profit : z.string().min(0,"Profit must be greater than or equal to 0")
 })
 export default function ProductsPage() {
-  const { data: session } = useSession();
   const [products, setProducts] = useState<Product[]>([]);
   const [form, setForm] = useState<Product>({ name: "", category: "", price: 0, profit : 0 });
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -34,8 +33,9 @@ export default function ProductsPage() {
       console.log("This is the resonse form the get ", res)
       setProducts(res.data);
     } catch (err) {
+      console.error("Failed to fetch products", err);
       toast.error("Failed to fetch products");
-    }
+    } 
   };
 
   useEffect(() => {

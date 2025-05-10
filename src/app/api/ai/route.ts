@@ -1,4 +1,4 @@
-import Togeter, { Together } from "together-ai";
+import { Together } from "together-ai";
 import { NextRequest } from "next/server";
 const together = new Together({
     apiKey : process.env.TOGETHER_API_KEY,
@@ -8,7 +8,6 @@ const together = new Together({
 
 export async function POST(req: NextRequest){
     const {prompt} = await req.json()
-    const content = "Hello, How are you "
     const res = await together.chat.completions.create({
         messages : [{role : "user", content : prompt}],
         model : "meta-llama/Llama-3.3-70B-Instruct-Turbo"

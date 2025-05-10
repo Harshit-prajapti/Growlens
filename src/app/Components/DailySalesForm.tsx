@@ -24,7 +24,10 @@ const DailySalesForm = ({ businessId }: { businessId: string }) => {
   const handleSubmit = async() => {
     for(const entry of entries){
         const product = products.find((p)=> p._id === entry.productId)
-        const revenue = product?.price! * entry.quantity;
+        let revenue = 0;
+        if(product?.price){
+          revenue = product.price * entry.quantity
+        }        
         await axios.post(`/api/daily-sales`,{
             businessId,
             productId : entry.productId,

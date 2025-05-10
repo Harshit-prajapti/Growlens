@@ -1,25 +1,28 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import ReactMarkdown from 'react-markdown';
 import { Loader2 } from 'lucide-react';
 import axios from 'axios'
-interface Product {
+interface Item {
   _id: string;
-  name: string;
-  price: number;
+  totalRevenue: number;
+  totalProfit: number;
+  totalQuantitySold: number;
+  productName : string;
+  productCategory : string;
+  productPrice : number;
+  productProfit : number;
 }
 const Ai = () => {
   const [prompt , setPrompt] = useState<string>("")
   const [message, setMessage] = useState<string>("")
   const [loading, setLoading] = useState<boolean>(false)
-  const [products, setProducts] = useState<any[]>([])
   const fetchDatat = async() => {
     const res = await axios.get("/api/analytics/product-performance/datebased")
     console.log("This is the response from the product performance route", res.data)
     let prompt = ""
-    res.data.map((item : any) => {
+    res.data.map((item : Item ) => {
       prompt += `On ${item._id} the total revenue is ${item.totalRevenue} and the total quantity sold is ${item.totalQuantitySold} and the total profit is ${item.totalProfit}.\n`
     })
     prompt += "What is the trend of the product with consider the leaves, market conditions and other financial fectores?"

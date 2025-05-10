@@ -1,5 +1,4 @@
 'use client'
-
 import React, { useState } from 'react'
 import { z } from "zod"
 import axios from 'axios'
@@ -18,7 +17,7 @@ const schema = z.object({
   customerType: z.string(),
 })
 
-const fillBusinessDetails = ({userId} : {userId : string}) => {
+const FillBusinessDetails = ({userId} : {userId : string}) => {
   const router = useRouter()
   const [error, setError] = useState<string>("")
   const [form, setForm] = useState({
@@ -32,14 +31,6 @@ const fillBusinessDetails = ({userId} : {userId : string}) => {
     painPoints: [""],
     growthGoals: [""],
   });
-  const handleArrayChange = (field: "painPoints" | "growthGoals", index: number, value: string) => {
-    const copy = [...form[field]];
-    copy[index] = value;
-    setForm({ ...form, [field]: copy });
-  };
-  const addMoreField = (field: "painPoints" | "growthGoals") => {
-    setForm({ ...form, [field]: [...form[field], ""] });
-  };
   const handleSubmit = async () => {
     setError("")
     console.log("i am called")
@@ -162,4 +153,4 @@ const fillBusinessDetails = ({userId} : {userId : string}) => {
   )
 }
 
-export default fillBusinessDetails
+export default FillBusinessDetails

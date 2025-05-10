@@ -3,7 +3,14 @@ import { getServerSession } from "next-auth";
 import authOptions from "../../auth/[...nextauth]/options";
 import UserModel from "../../../../../models/userModel";
 import DailySales from "../../../../../models/DailySales";
-import { cn } from "@/lib/utils";
+import { ObjectId } from "mongoose";
+interface MatchStage {
+  businessId: ObjectId | undefined;
+  date?: {
+    $gte: Date;
+    $lt: Date;
+  };
+}
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const date = searchParams.get("date");
@@ -14,7 +21,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json("User not found", { status: 404 });
   }
   const user = await UserModel.findById(userId);
-  let matchStage: any = {
+  const matchStage: MatchStage = {
     businessId: user?.businessId,
   };
   const now = new Date();
@@ -24,16 +31,9 @@ startOfISTDayUTC.setUTCHours(18, 30, 0, 0); // 18:30 UTC = 00:00 IST
 // If current UTC time is before today's 18:30 UTC, move start to yesterday's 18:30 UTC
 if (now < startOfISTDayUTC) {
   startOfISTDayUTC.setUTCDate(startOfISTDayUTC.getUTCDate() - 1);
-}const nowUTC = new Date();
-const IST_OFFSET_MINUTES = 330;
-
-// Convert current UTC to IST
-const nowIST = new Date(nowUTC.getTime() + IST_OFFSET_MINUTES * 60 * 1000);
-
-// Helper to convert IST datetime to corresponding UTC
-function getUTCFromIST(istDate: Date): Date {
-  return new Date(istDate.getTime() - IST_OFFSET_MINUTES * 60 * 1000);
 }
+// Convert current UTC to IST
+// Helper to convert IST datetime to corresponding UTC
   if (date === "Today") {
     const nowUTC = new Date(); // current UTC time
 
