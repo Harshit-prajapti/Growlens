@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import ProudctModel from "../../../../../models/Products";
-export async function DELETE(req:NextRequest,{params} : {params : {id : string}}){
-    const id = params.id;
+export async function DELETE(req:NextRequest){
+    const {searchParams} = new URL(req.url)
+    const id = searchParams.get("id")
     try {
         const res = await ProudctModel.findByIdAndDelete(id)
         console.log("this is the deleted item",res)
@@ -13,8 +14,9 @@ export async function DELETE(req:NextRequest,{params} : {params : {id : string}}
     }
 }
 
-export async function PUT(req:NextRequest,{params} : {params : {id : string}}){
-    const id = await params.id
+export async function PUT(req:NextRequest){
+    const {searchParams} = new URL(req.url)
+    const id = searchParams.get("id")
     const { name, category, price, profit} = await req.json();
     console.log('this is the data that we get : ',name,category,price,profit)
     if(!id){

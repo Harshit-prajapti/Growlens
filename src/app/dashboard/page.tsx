@@ -7,6 +7,7 @@ import BusinessModel from '../../../models/BusinessModel'
 import SignIn from '../Components/SignIn/page'
 import UserModel from '../../../models/userModel'
 import { redirect } from 'next/navigation'
+// import Image from 'next/image'
 import { CardContent, Card, CardHeader, CardDescription, CardTitle, CardFooter } from '@/components/ui/card'
 export default async function Dashboard() {
   await connectDb()
@@ -70,7 +71,7 @@ export default async function Dashboard() {
           <p>Created by Harshit Kumbhkar</p>
           <p className="mt-1">
             📱 +91 9039140984 &nbsp; | &nbsp;
-            📸 <a href="https://instagram.com/harshit_kumbhkar" target="_blank" className="text-indigo-600 hover:underline">Instagram</a>
+            📸 <a href="https://instagram.com/mr.harshprajapti" target="_blank" className="text-indigo-600 hover:underline">Instagram</a>
           </p>
         </div>
       </CardFooter>

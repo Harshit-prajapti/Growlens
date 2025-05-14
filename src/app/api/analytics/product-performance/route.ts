@@ -49,6 +49,7 @@ if (now < startOfISTDayUTC) {
       $gte: startOfISTDay,
       $lt: nowUTC,
     };
+    
   }else if (date === "This Week") {
     const istStart = new Date(startOfISTDayUTC);
     const dayOfWeek = istStart.getUTCDay(); // Sunday = 0

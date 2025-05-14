@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Card, CardContent } from "@/components/ui/card";
+import { Select, SelectTrigger, SelectValue, SelectItem, SelectContent } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -25,7 +26,7 @@ export default function ProductsPage() {
   const [form, setForm] = useState<Product>({ name: "", category: "", price: 0, profit : 0 });
   const [editingId, setEditingId] = useState<string | null>(null);
   const [error,setError] = useState<string>("")
-
+  const [selectedProduct,setSelectedProduct] = useState<Product | null>(null)
   const fetchProducts = async () => {
     try {
       const res = await axios.get("/api/products");
@@ -42,7 +43,9 @@ export default function ProductsPage() {
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    console.log("This is the form ",e.target.name)
+
+    setForm({ ...form, [e.target.name]: e.target.value }); 
   };
 
   const handleSubmit = async () => {
@@ -55,7 +58,7 @@ export default function ProductsPage() {
     try {
       if (editingId) {
         const id = editingId
-        const res = await axios.put(`/api/products/${id}`, form);
+        const res = await axios.put(`/api/products/edit?id=${id}`, form);
         console.log(res)
         toast.success("Product updated");
         setEditingId(null);
@@ -78,7 +81,7 @@ export default function ProductsPage() {
 
   const handleDelete = async (id: string) => {
     try {
-      await axios.delete(`/api/products/${id}`);
+      await axios.delete(`/api/products/edit?id=${id}`);
       toast.success("Product deleted"); 
       fetchProducts();
     } catch {
@@ -95,9 +98,28 @@ export default function ProductsPage() {
             <Label>Name</Label>
             <Input name="name" value={form.name} onChange={handleChange} placeholder="Product Name" />
           </div>
-          <div>
+            <div>
             <Label>Category</Label>
-            <Input name="category" value={form.category} onChange={handleChange} placeholder="Category" />
+            <Select name="category" value={selectedProduct?.name} onValueChange={(e) => {
+              setForm({ ...form, category: e });
+              setSelectedProduct(products.find((p) => p.name === e) || null);
+            }}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select a category"/>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Electronics & Tech">Electronics & Tech</SelectItem>
+                <SelectItem value="Personal Care">Personal Care</SelectItem>
+                <SelectItem value="Clothing & Accessories">Clothing & Accessories</SelectItem>
+                <SelectItem value="Food & Drink">Food & Drink</SelectItem>
+                <SelectItem value="Transportation">Transportation</SelectItem>
+                <SelectItem value="Medical/Health Products">Medical/Health Products</SelectItem>
+                <SelectItem value="Entertainment">Entertainment</SelectItem>
+                <SelectItem value="Kitchen Appliances">Kitchen Appliances</SelectItem>
+                <SelectItem value="Furniture">Furniture</SelectItem>
+                <SelectItem value="Office & School Supplies">Office & School Supplies</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           <div>
             <Label>Price ($)</Label>
@@ -114,7 +136,7 @@ export default function ProductsPage() {
         </CardContent>
       </Card>
 
-      <div className="grid gap-4">
+      <div className="md:grid md:grid-cols-3 gap-4">
         {products.length === 0 && <p className="text-gray-500">No products added yet.</p>}
         {products.map((product) => (
           <Card key={product._id} className="flex justify-between items-center p-4">

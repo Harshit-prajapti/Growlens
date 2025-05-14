@@ -38,8 +38,9 @@ const ProductsChart = () => {
   const [type,setType] = useState<string>("totalRevenue")
   const [date , setDate] = useState<string>("Today")
   const [loading, setLoading] = useState<boolean>(false)
+
   const fetchDailySales = async () => {
-    const res = await axios.get("/api/analytics/product-performance/datebased")
+    const res = await axios.get("/api/analytics/datebased")
     setDailySales(res.data)
     console.log("This is the response from the daily sales route", res.data) 
   }
@@ -68,9 +69,9 @@ const ProductsChart = () => {
     setProduct([])
     const getProduct = data.find((product) => product.productName === name)
     if (!getProduct) return;
-    const res = await axios.get(`/api/analytics/product-performance/${getProduct._id}`)
+    const res = await axios.get(`/api/analytics/productId?productId=${getProduct._id}`)
     setProduct(res.data)
-    console.log("This is the res from products : ",product)
+    console.log("This is the res for " + name + " : ",res.data)
   }
   return (
     <>

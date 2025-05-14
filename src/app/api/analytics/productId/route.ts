@@ -1,16 +1,18 @@
+import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import authOptions from "@/app/api/auth/[...nextauth]/options";
-import UserModel from "../../../../../../models/userModel";
-import DailySales from "../../../../../../models/DailySales";
-import { NextRequest, NextResponse } from "next/server";
 import mongoose from "mongoose";
+import UserModel from "../../../../../models/userModel";
+import DailySales from "../../../../../models/DailySales";
 
-export async function GET(
-  _request: NextRequest,
-  context: { params: { productId: string } }
-) {
-  const session = await getServerSession(authOptions  );
-
+// This is the correct type signature for a dynamic route handler
+export async function GET(req:NextRequest) {
+  const {searchParams} = new URL(req.url)
+  const productId = searchParams.get("productId")
+  if(!productId){
+    return NextResponse.json("Something went wrong",{status : 400})
+  }
+  const session = await getServerSession(authOptions);
   if (!session) {
     return new NextResponse("Unauthorized", { status: 401 });
   }
@@ -19,10 +21,6 @@ export async function GET(
   if (!user) {
     return new NextResponse("User not found", { status: 404 });
   }
-
-  const  {productId}  = context.params;
-  console.log("Product ID:", productId);
-
   const nowUTC = new Date();
   const startOfISTDay = new Date();
   startOfISTDay.setUTCHours(18, 30, 0, 0);
@@ -52,7 +50,7 @@ export async function GET(
       },
     },
     { $sort: { date: 1 } },
-  ]);
+  ])
 
-  return NextResponse.json(res, { status: 200 });
+  return NextResponse.json(res);
 }

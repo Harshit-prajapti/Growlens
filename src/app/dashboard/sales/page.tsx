@@ -32,6 +32,7 @@ export default function SalesPage() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [quantity, setQuantity] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("")
   const fetchProducts = async () => {
     try {
       setLoading(true);
@@ -66,10 +67,16 @@ export default function SalesPage() {
     }
 
     try {
+      setLoading(true)
+      setError("")
      const res =  await axios.post("/api/sales", {
         productId: selectedProduct._id,
         quantitySold: quantity,
       });
+      if(res.status != 200){
+        setError("Something went wrong")
+      }
+      setLoading(false)
       console.log("This is the response : ",res)
       toast.success("Sale recorded");
       setQuantity(0);
@@ -120,14 +127,17 @@ export default function SalesPage() {
             <Label className="mb-2">Auto Revenue ($)</Label>
             <Input value={selectedProduct ? selectedProduct.price * quantity : 0} disabled />
           </div>
+          {error && (<p>{error}</p>)}
           <div className="md:col-span-3 flex justify-end">
+            {loading && <Loader2 className = "animate-spin"/>}
             <Button className="cursor-pointer" onClick={handleSubmit}>Add Sale</Button>
           </div>
         </CardContent>
       </Card>
 
-      <div className="space-y-4">
+      <div className="md:grid md:grid-cols-2 gap-2 space-y-4">
         <h2 className="text-xl font-semibold">Recent Sales</h2>
+        <hr />
         {sales.length === 0 && <p className="text-gray-500">No sales recorded yet.</p>}
         {loading && (<Loader2 className="animate-spin text-blue-500" size={24} />)}
         {sales.map((sale) => (

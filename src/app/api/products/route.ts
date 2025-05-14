@@ -15,7 +15,7 @@ export async function GET(){
     }
     const products = await ProudctModel.find({businessId : user.businessId})
     return NextResponse.json(products,{status : 200})
-}
+} 
 
 export async function POST(req: NextRequest) {
     const { name, category, price, profit } = await req.json();
@@ -38,13 +38,4 @@ export async function POST(req: NextRequest) {
     });
   
     return NextResponse.json("Proudct craeted successfully",{status : 200});
-  }
-
-  export async function DELETE(req:NextRequest,{params} : {params : {id : string}}){
-    const {id} = await params
-    if(!id){
-      return NextResponse.json("id is not reachable",{status : 400})
-    }
-    const res = await ProudctModel.findByIdAndDelete(id)
-    return NextResponse.json(res,{status : 200})
   }

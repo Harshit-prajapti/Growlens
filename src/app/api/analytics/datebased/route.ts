@@ -1,8 +1,8 @@
 import {NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import authOptions from "@/app/api/auth/[...nextauth]/options";
-import DailySales from "../../../../../../models/DailySales";
-import UserModel from "../../../../../../models/userModel";
+import DailySales from "../../../../../models/DailySales";
+import UserModel from "../../../../../models/userModel";
 export async function GET(){
     const session  = await getServerSession(authOptions)
     const user = await UserModel.findById(session?.user.id)
