@@ -1,9 +1,9 @@
 'use client'
-
 import React, { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import ReactMarkdown from 'react-markdown'
-import { Loader2 } from 'lucide-react'
+import Loading from '@/app/Components/Loading'
+export const dynamic = 'force-dynamic'
 import {
   useReactTable,
   getCoreRowModel,
@@ -12,7 +12,6 @@ import {
   CellContext
 } from '@tanstack/react-table'
 import axios from 'axios'
-
 interface Item {
   _id: string
   date: string
@@ -61,7 +60,7 @@ const Ai = () => {
     if (!prompt) return
     setLoading(true)
     const res = await axios.post("/api/ai", { prompt })
-    console.log("AI response:", res.data)
+    // console.log("AI response:", res.data)
     setMessage(res.data.choices[0].message.content)
     setPrompt("")
     setLoading(false)
@@ -70,7 +69,7 @@ const Ai = () => {
   const handleKeyDown = async () => {
     const res = await axios.get("/api/allData")
     setData(res.data)
-    console.log("All Data Response:", res.data)
+    // console.log("All Data Response:", res.data)
     setClicked(true)
   }
 
@@ -125,15 +124,14 @@ const Ai = () => {
   })
 
   return (
-    <div className='md:ml-40 top-20 h-auto bg-white rounded shadow p-4'>
+    <div className='md:ml-40 top-20 h-auto dark:bg-gray-800 bg-white rounded shadow p-4'>
       <div className='flex flex-col gap-4'>
         <h1 className='text-2xl font-bold'>AI Insights</h1>
         <p className='text-sm text-gray-500'>Get trends based on sales data</p>
 
         {loading ? (
           <div className='flex items-center gap-2'>
-            <Loader2 className='animate-spin' />
-            <p className='text-sm text-gray-500'>Loading...</p>
+            <Loading height={200} weidth={200}/>
           </div>
         ) : (
           <ReactMarkdown>{message}</ReactMarkdown>
@@ -141,7 +139,7 @@ const Ai = () => {
 
         <textarea
           rows={7}
-          className='w-full text-gray-700 border border-gray-300 p-3 rounded'
+          className='w-full text-gray-700 border dark:text-white border-gray-300 p-3 rounded'
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
           placeholder='Enter or edit prompt...'
@@ -158,7 +156,7 @@ const Ai = () => {
       {data.length > 0 && (
         <div className="mt-6 overflow-x-auto border rounded-md">
           <table className="min-w-full text-sm text-left">
-            <thead className="bg-gray-100">
+            <thead className="bg-gray-100 dark:text-black dark:bg-amber-50">
               {table.getHeaderGroups().map(headerGroup => (
                 <tr key={headerGroup.id}>
                   {headerGroup.headers.map(header => (
@@ -171,7 +169,7 @@ const Ai = () => {
             </thead>
             <tbody>
               {table.getRowModel().rows.map(row => (
-                <tr key={row.id} className="border-t hover:bg-gray-50">
+                <tr key={row.id} className="border-t hover:bg-gray-50 dark:hover:bg-amber-50 dark:hover:text-black">
                   {row.getVisibleCells().map(cell => (
                     <td key={cell.id} className="p-3">
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}

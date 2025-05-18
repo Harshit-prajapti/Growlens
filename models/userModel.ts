@@ -1,11 +1,12 @@
 import mongoose from "mongoose"
 import { ObjectId } from "mongoose";
 import { Schema} from "mongoose"
+import { string } from "zod";
 
 export interface User extends Document {
-    username : string;
     createdAt : Date;
     fullname : string;
+    username : string;
     email : string;
     avatar : string;
     mobileNumber : number;
@@ -16,26 +17,28 @@ export interface User extends Document {
     isProfileComplete : boolean;
 }
 const UserSchema : Schema<User> =  new Schema({
-    username : {
+    email : {
         type : String,
         require : true,
         unique : true,
+        lowercase : true,
     },
     businessId : {
         type : Schema.Types.ObjectId,
         ref : "BusinessModel"
     },
-    email : {
+    fullname : {
         type : String,
-        require : true
+    },
+    username : {
+        type : String,
+        required : true,
+        unique : true,
     },
     createdAt : {
         type : Date,
         required : true,
         default : Date.now()
-    },
-    fullname : {
-        type : String,
     },
     avatar : {
         type : String,
@@ -47,7 +50,8 @@ const UserSchema : Schema<User> =  new Schema({
         type : String        
     },
     password : {
-        type : String,    },
+        type : String,
+    },
     role : {
         type : String,
         enum : ["user","premium","admin"],
@@ -57,12 +61,13 @@ const UserSchema : Schema<User> =  new Schema({
         type : Boolean,
         default : false
     }
+},{
+    strict : true
 })
-UserSchema.pre("save", async function(next){
-    if(!this.isModified()){
-        return next
-    }
-})
+UserSchema.pre("save", async function (next) {
+  next(); // Always call next unless you are throwing an error
+});
+
 
 const UserModel =(mongoose.models.User as mongoose.Model<User>)|| mongoose.model<User>("User",UserSchema)
 export default UserModel

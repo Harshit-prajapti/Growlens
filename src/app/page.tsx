@@ -54,7 +54,7 @@ export default async function Home() {
           <p>Created by Harshit Kumbhkar</p>
           <p className="mt-1">
             📱 +91 9039140984 &nbsp; | &nbsp;
-            📸 <a href="https://instagram.com/harshit_kumbhkar" target="_blank" className="text-indigo-600 hover:underline">Instagram</a>
+            📸 <a href="https://instagram.com/mr.harshprajapti" target="_blank" className="text-indigo-600 hover:underline">Instagram</a>
           </p>
         </footer>
       </div>

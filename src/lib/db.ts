@@ -5,7 +5,12 @@ const connectDb = async () => {
         return mongoose.connection.asPromise()
     }
     try{
-        const res = await mongoose.connect(process.env.MONGO_URI as string)
+        const uri = process.env.MONGO_URI as string
+        if(!uri){
+            console.error("MongoDB URI not found")
+            process.exit(1)
+        }
+        const res = await mongoose.connect(uri)
         console.log("MongoDB connected : ", res.connection.host)
     }catch(err){    
         console.error("MongoDB connection error", err)

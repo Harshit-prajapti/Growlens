@@ -6,12 +6,15 @@ import authOptions from '../api/auth/[...nextauth]/options'
 import BusinessModel from '../../../models/BusinessModel'
 import SignIn from '../Components/SignIn/page'
 import UserModel from '../../../models/userModel'
+import Image from 'next/image'
 import { redirect } from 'next/navigation'
+export const dynamic = 'force-dynamic'
 // import Image from 'next/image'
 import { CardContent, Card, CardHeader, CardDescription, CardTitle, CardFooter } from '@/components/ui/card'
 export default async function Dashboard() {
   await connectDb()
   const session = await getServerSession(authOptions)
+  console.log("This is the session : ",session?.user)
   if(!session){
     return (
       <div className='flex flex-col items-center justify-center h-screen'>
@@ -20,7 +23,8 @@ export default async function Dashboard() {
       </div>
     )
   }
-  const user = await UserModel.findById(session.user.id)
+  const user = await UserModel.findById(session.user.id) 
+  console.log(user)
   if(!user){
     return (
       <div className='flex flex-col items-center justify-center h-screen'>
@@ -30,8 +34,9 @@ export default async function Dashboard() {
     )
   }
   if(!session.user.isProfileComplete){
-    redirect("/FillBusinessDetails")
+    redirect("/dashboard/fillBusinessDetails")
   }
+  const img = session.user.image
   const business = await BusinessModel.findById(user.businessId)
   return (
     <div className='md:ml-40 mt-10'>
@@ -44,7 +49,22 @@ export default async function Dashboard() {
         <CardDescription className='text-sm text-gray-500'>{business?.industryType}</CardDescription>
         </div>
         <div>
-          <img className='rounded w-auto h-20' src={user?.avatar} alt="" />
+        {img ? (<>
+          <img
+            src={img || "/images/download.png"}
+            width={30}
+            height={30}
+            className="cursor-pointer rounded-2xl"
+          />
+        </>) : (<>
+        <Image
+            src={"/images/download.png"}
+            alt="Admin"
+            width={30}
+            height={30}
+            style={{ cursor: "pointer" }}
+          />
+        </>)}
         </div>
         </div>
       </CardHeader>

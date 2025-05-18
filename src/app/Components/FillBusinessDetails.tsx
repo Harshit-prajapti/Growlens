@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from '@radix-ui/react-label'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { Loader2 } from 'lucide-react'
 const schema = z.object({
   name: z.string().min(5, "Name must be at least 5 characters").max(20, "Name is too long"),
   industryType: z.string().min(1, "Industry type is required"),
@@ -20,6 +21,7 @@ const schema = z.object({
 export default function FillBusinessDetails({userId} : {userId : string}){
   const router = useRouter()
   const [error, setError] = useState<string>("")
+  const [loading, setLoading] = useState(false)
   const [form, setForm] = useState({
     name: "",
     industryType: "",
@@ -39,6 +41,7 @@ export default function FillBusinessDetails({userId} : {userId : string}){
       console.log("i was invoked")
       setError(validation.error.errors[0].message)
     } else{
+      setLoading(true)
       const res = await axios.post("/api/business",{...form,userId},{
         headers : {
           "Content-Type" : "multipart/form-data"
@@ -46,8 +49,10 @@ export default function FillBusinessDetails({userId} : {userId : string}){
       })
       if( res.status !== 200){
       window.alert("Something went wrong")
+      return
     }
-    router.replace("/dashboard")
+    setLoading(false)
+    router.replace("/dashboard/products")
     }    
   };
   return (
@@ -139,10 +144,10 @@ export default function FillBusinessDetails({userId} : {userId : string}){
             Submit
           </Button>
         </div>
-
+        <div>
+        {loading && <Loader2 className="animate-spin text-blue-600 w-6 h-6 mx-auto mt-4"/>}
+        </div>
         <div className="flex items-center my-3">
-          <hr className="flex-grow border-gray-300" />
-          <span className="mx-2 text-gray-500">or</span>
           <hr className="flex-grow border-gray-300" />
         </div>
 

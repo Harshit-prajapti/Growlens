@@ -28,7 +28,7 @@ const Sidebar = () => {
   return (
     <div
       className={` rounded 
-        fixed z-50 bg-white dark:bg-black text-black shadow-lg p-2
+        fixed z-50 bg-white dark:bg-stone-800 text-black shadow-lg p-2
         flex md:flex-col md:top-14 md:left-0 md:h-screen md:w-40
         bottom-0 w-full justify-around md:justify-start md:items-center md:gap-5
       `}
@@ -39,7 +39,7 @@ const Sidebar = () => {
           className="flex flex-col md:flex-row items-center gap-1 md:gap-4 p-2 hover:bg-blue-500 hover:text-white rounded"
         >
           <Image height={30} width={30} src="/images/file.png" alt="Admin" />
-          <span className="md:inline font-bold">Admin</span>
+          <span className="dark:text-white text-gray-700 md:inline font-bold">Admin</span>
         </Link>
       ) : (
         <>
@@ -50,7 +50,7 @@ const Sidebar = () => {
               className="flex flex-col md:flex-row items-center gap-1 md:gap-2 p-2 hover:bg-blue-500 hover:text-white rounded"
             >
               <Image height={30} width={30} src={icon} alt={label} />
-              <span className="font-bold">{label}</span>
+              <span className="dark:text-white text-gray-700 font-bold">{label}</span>
             </Link>
           ))}
           {isPremium &&
@@ -58,10 +58,10 @@ const Sidebar = () => {
               <Link
                 key={label}
                 href={href}
-                className="flex flex-col md:flex-row items-center gap-1 md:gap-2 p-2 hover:bg-blue-500 hover:text-white rounded"
+                className="flex flex-col md:flex-row items-center gap-1 md:gap-2 p-2 dark:text-white hover:bg-blue-500 hover:text-white rounded"
               >
                 <Image height={30} width={30} src={icon} alt={label} />
-                <span className="md:inline font-bold">{label}</span>
+                <span className="md:inline dark:text-white font-bold">{label}</span>
               </Link>
             ))}
         </>

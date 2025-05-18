@@ -1,5 +1,5 @@
 "use client";
-
+export const dynamic = 'force-dynamic'
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Input } from "@/components/ui/input";
@@ -8,8 +8,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectTrigger, SelectValue, SelectItem, SelectContent } from "@/components/ui/select";
-import { Loader2 } from "lucide-react";
-
+import Loader from "@/app/Components/Loader";
 interface Product {
   _id: string;
   name: string;
@@ -77,7 +76,6 @@ export default function SalesPage() {
         setError("Something went wrong")
       }
       setLoading(false)
-      console.log("This is the response : ",res)
       toast.success("Sale recorded");
       setQuantity(0);
       setSelectedProduct(null);
@@ -89,8 +87,7 @@ export default function SalesPage() {
 
   return (
     <div className="p-6 max-w-4xl mx-auto space-y-8">
-      <h1 className="text-3xl font-bold">Daily Sales Entry</h1>
-
+      <h1 className="text-3xl font-bold">Daily Sales Entry</h1> 
       <Card>
         <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-4 py-4">
           <div>
@@ -129,7 +126,7 @@ export default function SalesPage() {
           </div>
           {error && (<p>{error}</p>)}
           <div className="md:col-span-3 flex justify-end">
-            {loading && <Loader2 className = "animate-spin"/>}
+            {/* {loading && <Loader/>} */}
             <Button className="cursor-pointer" onClick={handleSubmit}>Add Sale</Button>
           </div>
         </CardContent>
@@ -139,7 +136,8 @@ export default function SalesPage() {
         <h2 className="text-xl font-semibold">Recent Sales</h2>
         <hr />
         {sales.length === 0 && <p className="text-gray-500">No sales recorded yet.</p>}
-        {loading && (<Loader2 className="animate-spin text-blue-500" size={24} />)}
+        {loading && (<Loader/>)}
+        {/* {loading && (<Loading height={400} weidth={400}/>)} */}
         {sales.map((sale) => (
           <Card key={sale._id}>
             <CardContent className="flex justify-between items-center p-4">

@@ -5,7 +5,8 @@ import { LineChart, Line} from 'recharts';
 import {Select,SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
 import { useEffect, useState } from "react";
 import axios from 'axios';
-import { Loader2 } from 'lucide-react';
+export const dynamic = 'force-dynamic'
+import Loading from '@/app/Components/Loading';
 interface Data {
   _id: string;
   totalRevenue: number;
@@ -76,17 +77,18 @@ const ProductsChart = () => {
   return (
     <>
     <div className='flex flex-col'>
-    <div className='md:ml-40 mt-10 h-[370] bg-white rounded shadow p-4'>
       <div className='flex flex-row justify-center items-center content-center mb-4 h-auto w-full rounded p-2 '>
       {loading && (<>
-        <Loader2 className='animate-spin'/>
+      <Loading height={300} weidth={300}/>
       </>)}
       </div>
-      <div className='flex flex-row justify-between items-center content-center mb-4 font-semibold bg-rose-500 rounded p-2 '>
+    <div className='md:ml-40 mt-10 h-[370] bg-white rounded shadow p-4 dark:bg-zinc-700 '>
+      
+      <div className='flex flex-row dark:bg-slate-600 justify-between items-center content-center mb-4 font-semibold bg-rose-500 rounded p-2 '>
       <h2 className="text-lg font-semibold mb-4 text-white">Daily Comparision</h2>
     <Select onValueChange={(Value)=> setType(Value)}>
       <SelectTrigger className="w-[180px] mb-4 text-white border-0 border-none" >
-        <SelectValue placeholder="Select a Product" />
+        <SelectValue className='text-white' placeholder="Select a Product" />
       </SelectTrigger>
       <SelectContent>
         <SelectItem value="totalRevenue">Revenue</SelectItem> 
@@ -95,7 +97,7 @@ const ProductsChart = () => {
       </SelectContent>
     </Select>
       </div>
-    <ResponsiveContainer width="100%" height="80%" >
+    <ResponsiveContainer className={"dark:bg-zinc-700"} width="100%" height="80%" >
       <LineChart data={dailySales} margin={{ top: 10, right: 30, left: 0, bottom: 5 }}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey={"_id"} />
@@ -107,8 +109,8 @@ const ProductsChart = () => {
       </div>
 
     
-    <div className="md:ml-40 mt-10 h-[420] bg-white rounded-xl shadow p-4">
-    <div className='flex flex-row justify-between items-center content-center mb-4 font-semibold bg-rose-500 rounded p-2 '>
+    <div className="md:ml-40 dark:bg-zinc-700 mt-10 h-[420] bg-white rounded-xl shadow p-4">
+    <div className='flex dark:bg-stone-500 flex-row justify-between items-center content-center mb-4 font-semibold bg-rose-500 rounded p-2 '>
       <h2 className="text-lg font-semibold mb-4 text-white">Sales</h2>
     <Select onValueChange={(Value)=> setDate(Value)}>
       <SelectTrigger className="w-[180px] mb-4 text-white border-0 border-none" >
@@ -123,7 +125,7 @@ const ProductsChart = () => {
       </SelectContent>
     </Select>
       </div>
-      <ResponsiveContainer width="100%" height="80%">
+      <ResponsiveContainer className={"dark:bg-zinc-700"} width="100%" height="80%">
         <BarChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 5 }}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="productName" />
@@ -137,13 +139,13 @@ const ProductsChart = () => {
     </div>
 
 
-    <div className='md:ml-40 mt-10 h-[350] bg-white rounded-xl shadow p-4'>
-    <div className='flex flex-row justify-between items-center content-center mb-4 font-semibold bg-sky-400 rounded p-2 '>
+    <div className='md:ml-40 mt-10 h-[350] dark:bg-zinc-700 bg-white rounded-xl shadow p-4'>
+    <div className='flex dark:bg-slate-600 flex-row justify-between items-center content-center mb-4 font-semibold bg-sky-400 rounded p-2 '>
       <h2 className="text-lg font-semibold mb-4 text-white">Product Performance</h2>
       <h1 className='text-white font-semibold'>{name}</h1>
       <Select onValueChange={handleSelect}>
       <SelectTrigger className="w-[180px] border-none text-white" >
-        <SelectValue placeholder="Select a Product" />
+        <SelectValue className=' text-white dark:text-white dark:bg-black' placeholder="Select a Product" />
       </SelectTrigger>
       <SelectContent className='bg-white'>
         
@@ -157,7 +159,7 @@ const ProductsChart = () => {
       </SelectContent>
     </Select>
       </div>    
-    <ResponsiveContainer width="100%" height="80%" >
+    <ResponsiveContainer className={"dark:bg-zinc-700"} width="100%" height="80%" >
       <LineChart data={product} margin={{ top: 10, right: 30, left: 0, bottom: 5 }}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey={"_id"} />

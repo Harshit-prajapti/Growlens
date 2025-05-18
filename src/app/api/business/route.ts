@@ -28,7 +28,10 @@ export async function POST(req : NextRequest){
         monthlySales,
         customerType
     })
-    await UserModel.findByIdAndUpdate(res._id,{businessId : res._id},{new : true})
+    if(!res){
+        return NextResponse.json("Something went wrong",{status : 500})
+    }
+    await UserModel.findByIdAndUpdate(session.user.id,{businessId : res._id},{new : true})
     await UserModel.findByIdAndUpdate(session.user.id,{isProfileComplete : true})
-    return  NextResponse.json("Product delete successfully",{status : 200}) 
+    return  NextResponse.json("Business Model created successfully",{status : 200}) 
 }

@@ -7,7 +7,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+export const dynamic = 'force-dynamic'
 import z from "zod"
+import Loader from "@/app/Components/Loader";
 interface Product {
   _id?: string;
   name: string;
@@ -27,14 +29,17 @@ export default function ProductsPage() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [error,setError] = useState<string>("")
   const [selectedProduct,setSelectedProduct] = useState<Product | null>(null)
+  const [loading,setLoading] = useState<boolean>(false)
   const fetchProducts = async () => {
     try {
+      setLoading(true)
       const res = await axios.get("/api/products");
       console.log("This is the resonse form the get ", res)
       setProducts(res.data);
-    } catch (err) {
-      console.error("Failed to fetch products", err);
-      toast.error("Failed to fetch products");
+      setLoading(false)
+    } catch (e) {
+      console.log(e)
+      toast.error("Failed to fetch products : ");
     } 
   };
 
@@ -43,7 +48,6 @@ export default function ProductsPage() {
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("This is the form ",e.target.name)
 
     setForm({ ...form, [e.target.name]: e.target.value }); 
   };
@@ -58,13 +62,12 @@ export default function ProductsPage() {
     try {
       if (editingId) {
         const id = editingId
-        const res = await axios.put(`/api/products/edit?id=${id}`, form);
-        console.log(res)
+        await axios.put(`/api/products/edit?id=${id}`, form);
+        // console.log(res)
         toast.success("Product updated");
         setEditingId(null);
       } else {
-        const res = await axios.post("/api/products", form);
-        console.log("this is the response form the post route",res)
+        await axios.post("/api/products", form);
         toast.success("Product added");
       }
       setForm({ name: "", category: "", price: 0,profit : 0 });
@@ -137,6 +140,7 @@ export default function ProductsPage() {
       </Card>
 
       <div className="md:grid md:grid-cols-3 gap-4">
+        {loading && <Loader/>}
         {products.length === 0 && <p className="text-gray-500">No products added yet.</p>}
         {products.map((product) => (
           <Card key={product._id} className="flex justify-between items-center p-4">
