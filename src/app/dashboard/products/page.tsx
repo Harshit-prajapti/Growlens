@@ -7,9 +7,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-export const dynamic = 'force-dynamic'
 import z from "zod"
-import Loader from "@/app/Components/Loader";
+import dynamic from 'next/dynamic'
+// disable SSR
+const Loader = dynamic(() => import('@/app/Components/Loader'), {
+  ssr: false,
+})
 interface Product {
   _id?: string;
   name: string;

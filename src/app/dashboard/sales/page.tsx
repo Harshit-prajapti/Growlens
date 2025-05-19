@@ -1,5 +1,4 @@
 "use client";
-export const dynamic = 'force-dynamic'
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Input } from "@/components/ui/input";
@@ -8,7 +7,12 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectTrigger, SelectValue, SelectItem, SelectContent } from "@/components/ui/select";
-import Loader from "@/app/Components/Loader";
+import dynamic from 'next/dynamic'
+
+// disable SSR
+const Loader = dynamic(() => import('@/app/Components/Loader'), {
+  ssr: false,
+})
 interface Product {
   _id: string;
   name: string;

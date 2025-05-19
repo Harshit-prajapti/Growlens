@@ -2,8 +2,10 @@
 import React, { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import ReactMarkdown from 'react-markdown'
-import Loading from '@/app/Components/Loading'
-export const dynamic = 'force-dynamic'
+import dynamic from 'next/dynamic'
+const Loading = dynamic(() => import('@/app/Components/Loading'), {
+  ssr: false,
+})
 import {
   useReactTable,
   getCoreRowModel,

@@ -3,8 +3,6 @@ import type { Metadata } from "next";
 import { GeistSans, GeistMono } from "geist/font"; // ✅ Correct import
 import "./globals.css";
 import AuthProvider from "../../context/AuthProvider";
-import { ThemeProvider } from "@/context/Theme";
-// const geistSans = Geist({
 //   variable: "--font-geist-sans",
 //   subsets: ["latin"],
 // });
@@ -36,13 +34,11 @@ export default function RootLayout({
   return (
     <html lang="en" className="">
       <AuthProvider>
-        <ThemeProvider>
           <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
-      </body>
-        </ThemeProvider>      
+          {children}        
+      </body>     
       </AuthProvider>      
     </html>
   );

@@ -5,8 +5,10 @@ import { LineChart, Line} from 'recharts';
 import {Select,SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
 import { useEffect, useState } from "react";
 import axios from 'axios';
-export const dynamic = 'force-dynamic'
-import Loading from '@/app/Components/Loading';
+import dynamic from 'next/dynamic'
+const Loading = dynamic(() => import('@/app/Components/Loading'), {
+  ssr: false,
+})
 interface Data {
   _id: string;
   totalRevenue: number;
